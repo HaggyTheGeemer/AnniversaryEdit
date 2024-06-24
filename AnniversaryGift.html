@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile-Friendly Scavenger Hunt</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px; /* Adjust as needed for your content */
+        }
+        input, button {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+
+        /* Media Queries for Mobile */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mobile-Friendly Scavenger Hunt</h1>
+        
+        <!-- Part 0: Choose destination -->
+        <div id="part0" class="choice-buttons">
+            <p>Would you like to visit Paris or go to a beach?</p>
+            <div class="choice-images">
+                <button onclick="chooseDestination('Paris')">Paris</button>
+                <button onclick="chooseDestination('Beach')">Beach</button>
+            </div>
+        </div>
+
+        <!-- Part 1: Enter number -->
+        <div id="part1" class="number-input" style="display: none;">
+            <p>Enter a number between 1 and 10:</p>
+            <input type="number" id="userInput" min="1" max="10">
+            <button onclick="startScavengerHunt()">Start</button>
+        </div>
+
+        <!-- Part 2: Confirmation -->
+        <div id="part2" class="confirmation" style="display: none;">
+            <p>Did you listen to the song?</p>
+            <button onclick="confirmListening(true)">Yes</button>
+            <button onclick="confirmListening(false)">No</button>
+        </div>
+
+        <!-- Part 3: Choose roses or chocolate -->
+        <div id="part3" class="emoji-buttons" style="display: none;">
+            <p>Would you like 🌹 or 🍫?</p>
+            <button onclick="chooseOption('roses')">🌹</button>
+            <button onclick="chooseOption('chocolate')">🍫</button>
+        </div>
+
+        <!-- Part 4: Final choice (fancy dinner or picnic) -->
+        <div id="part4" class="final-choice-buttons" style="display: none;">
+            <p>Would you prefer a fancy dinner or a picnic?</p>
+            <button onclick="chooseFinalChoice('fancy')">Fancy Dinner 🍽️</button>
+            <button onclick="chooseFinalChoice('picnic')">Picnic 🧺</button>
+        </div>
+
+        <!-- Part 5: Choose animal (Parrots or Chimps) -->
+        <div id="part5" class="animal-choice" style="display: none;">
+            <p>Which animal do you prefer: Parrots or Chimps?</p>
+            <button onclick="chooseAnimal('Parrots')">Parrots</button>
+            <button onclick="chooseAnimal('Chimps')">Chimps</button>
+        </div>
+
+        <!-- Part 6: Choose name (Caesar or Trixie) -->
+        <div id="part6" class="name-choice" style="display: none;">
+            <p>Which name do you prefer: Caesar or Trixie?</p>
+            <button onclick="chooseName('Caesar')">Caesar</button>
+            <button onclick="chooseName('Trixie')">Trixie</button>
+        </div>
+
+        <!-- Part 7: Choose preference (Caesar or Trixie) -->
+        <div id="part7" class="preference-choice" style="display: none;">
+            <p>Which name do you like more?</p>
+            <button onclick="choosePreference('Caesar')">Caesar</button>
+            <button onclick="choosePreference('Trixie')">Trixie</button>
+        </div>
+
+        <!-- Summary of Choices -->
+        <div id="summary" style="display: none;">
+            <h2>Your Choices</h2>
+            <p id="choiceDestination"></p>
+            <p id="choiceNumber"></p>
+            <p id="choiceFinal"></p>
+            <p id="choiceFinalChoice"></p>
+            <p id="choiceAnimal"></p>
+            <p id="choiceName"></p>
+            <p id="choicePreference"></p>
+        </div>
+    </div>
+
+    <script>
+        let choices = {
+            destination: '',
+            number: '',
+            final: '',
+            finalChoice: '',
+            animal: '',
+            name: '',
+            preference: ''
+        };
+
+        function chooseDestination(destination) {
+            choices.destination = destination;
+            document.getElementById('part0').style.display = 'none';
+            document.getElementById('part1').style.display = 'block';
+            highlightChoices();
+        }
+
+        function startScavengerHunt() {
+            var userInput = document.getElementById('userInput').value;
+            var number = parseInt(userInput);
+            if (number >= 1 && number <= 10) {
+                choices.number = number;
+                var url;
+                if (number % 2 === 0) {
+                    url = 'https://www.youtube.com/watch?v=hHNh5GEkkuY';
+                } else {
+                    url = 'https://www.youtube.com/watch?v=wHd5OthhPvg';
+                }
+                alert('You selected ' + (number % 2 === 0 ? 'an even' : 'an odd') + ' number! Here is your link: ' + url);
+                window.open(url, '_blank');
+                document.getElementById('part1').style.display = 'none';
+                document.getElementById('part2').style.display = 'block';
+                highlightChoices();
+            } else {
+                alert('Please enter a valid number between 1 and 10.');
+            }
+        }
+
+        function confirmListening(listened) {
+            if (listened) {
+                alert('Great! Let\'s move on to the next part.');
+                document.getElementById('part2').style.display = 'none';
+                document.getElementById('part3').style.display = 'block';
+            } else {
+                alert('Please listen to the song and come back.');
+            }
+        }
+
+        function chooseOption(option) {
+            choices.final = option;
+            document.getElementById('part3').style.display = 'none';
+            document.getElementById('part4').style.display = 'block';
+            highlightChoices();
+        }
+
+        function chooseFinalChoice(finalChoice) {
+            choices.finalChoice = finalChoice;
+            document.getElementById('part4').style.display = 'none';
+            document.getElementById('part5').style.display = 'block';
+            highlightChoices();
+        }
+
+        function chooseAnimal(animal) {
+            choices.animal = animal;
+            document.getElementById('part5').style.display = 'none';
+            document.getElementById('part6').style.display = 'block';
+            highlightChoices();
+        }
+
+        function chooseName(name) {
+            choices.name = name;
+            document.getElementById('part6').style.display = 'none';
+            document.getElementById('part7').style.display = 'block';
+            highlightChoices();
+        }
+
+        function choosePreference(preference) {
+            choices.preference = preference;
+            document.getElementById('part7').style.display = 'none';
+            document.getElementById('summary').style.display = 'block';
+            highlightChoices();
+        }
+
+        function highlightChoices() {
+            document.getElementById('choiceDestination').innerText = 'Destination: ' + choices.destination;
+            document.getElementById('choiceNumber').innerText = 'Number: ' + choices.number;
+            document.getElementById('choiceFinal').innerText = 'Final Choice: ' + choices.final;
+            document.getElementById('choiceFinalChoice').innerText = 'Final Meal: ' + (choices.finalChoice === 'fancy' ? 'Fancy Dinner 🍽️' : 'Picnic 🧺');
+            document.getElementById('choiceAnimal').innerText = 'Preferred Animal: ' + choices.animal;
+            document.getElementById('choiceName').innerText = 'Preferred Name: ' + choices.name;
+            document.getElementById('choicePreference').innerText = 'Preferred Name: ' + choices.preference;
+
+            document.getElementById('choiceDestination').classList.add('highlight');
+            setTimeout(() => {
+                document.getElementById('choiceDestination').classList.remove('highlight');
+            }, 1000);
+
+            if (choices.number) {
+                document.getElementById('choiceNumber').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choiceNumber').classList.remove('highlight');
+                }, 1000);
+            }
+
+            if (choices.final) {
+                document.getElementById('choiceFinal').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choiceFinal').classList.remove('highlight');
+                }, 1000);
+            }
+
+            if (choices.finalChoice) {
+                document.getElementById('choiceFinalChoice').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choiceFinalChoice').classList.remove('highlight');
+                }, 1000);
+            }
+
+            if (choices.animal) {
+                document.getElementById('choiceAnimal').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choiceAnimal').classList.remove('highlight');
+                }, 1000);
+            }
+
+            if (choices.name) {
+                document.getElementById('choiceName').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choiceName').classList.remove('highlight');
+                }, 1000);
+            }
+
+            if (choices.preference) {
+                document.getElementById('choicePreference').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('choicePreference').classList.remove('highlight');
+                }, 1000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('part0').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
