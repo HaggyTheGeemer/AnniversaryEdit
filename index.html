@@ -55,7 +55,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Anniversary Hunt</h1></h1>
+        <h1>Anniversary Hunt</h1>
         
         <!-- Part 0: Choose destination -->
         <div id="part0" class="choice-buttons part">
@@ -178,6 +178,22 @@
             restoreState(); // Restore state on page load
         });
 
+        // Event listener when the window is closed or navigated away
+        window.addEventListener('beforeunload', () => {
+            saveState(getCurrentPartId());
+        });
+
+        // Function to get the current part ID
+        function getCurrentPartId() {
+            let currentPartId = '';
+            document.querySelectorAll('.part').forEach(part => {
+                if (part.style.display === 'block') {
+                    currentPartId = part.id;
+                }
+            });
+            return currentPartId;
+        }
+
         function chooseDestination(destination) {
             choices.destination = destination;
             displayPart('part1');
@@ -201,6 +217,11 @@
 
                 // Redirect to YouTube (open in new tab)
                 window.open(url, '_blank');
+
+                // Display next part after some time (adjust as needed)
+                setTimeout(() => {
+                    displayPart('part2');
+                }, 1000); // Example delay of 1 second
             } else {
                 alert('Please enter a valid number between 1 and 10, madam.');
             }
