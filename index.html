@@ -174,8 +174,8 @@
                 const url = number % 2 === 0
                     ? 'https://www.youtube.com/watch?v=hHNh5GEkkuY'
                     : 'https://www.youtube.com/watch?v=wHd5OthhPvg';
-                alert(`You selected ${number % 2 === 0 ? 'an even' : 'an odd'} number! Here is your link: ${url}`);
-                window.open(url, '_blank');
+                document.getElementById('summary').style.display = 'block';
+                document.getElementById('choiceNumber').innerText = `You selected ${number % 2 === 0 ? 'an even' : 'an odd'} number! Here is your link: ${url}`;
                 displayPart('part2');
             } else {
                 alert('Please enter a valid number between 1 and 10.');
